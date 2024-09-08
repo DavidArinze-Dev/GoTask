@@ -151,6 +151,14 @@ export const dashboardStatistics = async (req, res) => {
       .limit(10)
       .sort({ _id: -1 });
 
+    // const users = isAdmin
+    // ? await User.find({ isActive: true })
+    //     .select("name title role isAdmin createdAt")
+    //     .limit(10)
+    //     .sort({ _id: -1 })
+    // : await User.findById(userId)
+    //     .select("name title role isAdmin createdAt");
+
     //   group task by stage and calculate counts
     const groupTaskks = allTasks.reduce((result, task) => {
       const stage = task.stage;
@@ -200,11 +208,16 @@ export const dashboardStatistics = async (req, res) => {
 export const getTasks = async (req, res) => {
   try {
     const { stage, isTrashed } = req.query;
+    const { userId, isAdmin } = req.user; //--
 
     let query = { isTrashed: isTrashed ? true : false };
 
     if (stage) {
       query.stage = stage;
+    }
+
+    if (!isAdmin) {
+      query.team = { $all: [userId] }; //--
     }
 
     let queryResult = Task.find(query)
@@ -295,7 +308,7 @@ export const updateTask = async (req, res) => {
 
     res
       .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+      .json({ status: true, message: "Task updated successfully." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -315,6 +328,26 @@ export const trashTask = async (req, res) => {
     res.status(200).json({
       status: true,
       message: `Task trashed successfully.`,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+export const restoreTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const task = await Task.findById(id);
+
+    task.isTrashed = false;
+
+    await task.save();
+
+    res.status(200).json({
+      status: true,
+      message: `Task successfully restored.`,
     });
   } catch (error) {
     console.log(error);

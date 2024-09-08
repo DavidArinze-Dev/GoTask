@@ -27,7 +27,7 @@ const TaskCard = ({ task }) => {
 
   return (
     <>
-      <div className='w-full h-fit bg-white shadow-md p-4 rounded'>
+      <div className='w-full h-fit bg-white shadow-md p-4 rounded card-shadow'>
         <div className='w-full flex justify-between'>
           <div
             className={clsx(
@@ -76,7 +76,7 @@ const TaskCard = ({ task }) => {
               <div
                 key={index}
                 className={clsx(
-                  "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1",
+                  "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-2",
                   BGS[index % BGS?.length]
                 )}
               >
@@ -97,7 +97,7 @@ const TaskCard = ({ task }) => {
               <span className='text-sm text-gray-600'>
                 {formatDate(new Date(task?.subTasks[0]?.date))}
               </span>
-              <span className='bg-blue-600/10 px-3 py-1 rounded0full text-blue-700 font-medium'>
+              <span className='bg-orange-600/10 px-3 py-1 rounded0full text-orange-600 font-medium'>
                 {task?.subTasks[0].tag}
               </span>
             </div>
@@ -114,7 +114,7 @@ const TaskCard = ({ task }) => {
           <button
             onClick={() => setOpen(true)}
             disabled={user.isAdmin ? false : true}
-            className='w-full flex gap-4 items-center text-sm text-gray-500 font-semibold disabled:cursor-not-allowed disabled::text-gray-300'
+            className='w-full flex gap-4 items-center text-sm text-gray-500 hover:text-orange-600 font-semibold disabled:cursor-not-allowed disabled::text-gray-300'
           >
             <IoMdAdd className='text-lg' />
             <span>ADD SUBTASK</span>

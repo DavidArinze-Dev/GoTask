@@ -75,7 +75,7 @@ const MobileSidebar = () => {
               <div className='w-full flex justify-end px-5 mt-5'>
                 <button
                   onClick={() => closeSidebar()}
-                  className='flex justify-end items-end'
+                  className='flex justify-end items-end pt-5'
                 >
                   <IoClose size={25} />
                 </button>
@@ -111,7 +111,7 @@ function App() {
         <Route path='/log-in' element={<Login />} />
       </Routes>
 
-      <Toaster richColors />
+      <Toaster richColors /> 
     </main>
   );
 }
